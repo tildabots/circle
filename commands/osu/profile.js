@@ -39,6 +39,6 @@ module.exports = class ProfileCommand extends Command {
       'Rank',
       `#${stats.pp.rank} (${stats.country}#${stats.pp.countryRank}`
     )
-    return message.say('WIP')
+    return message.embed(embed)
   }
 }
