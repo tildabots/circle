@@ -1,7 +1,8 @@
 const { Command } = require('discord.js-commando')
 const { RichEmbed } = require('discord.js')
 const osu = require('node-osu')
-const getMode = require('./utils/getMode')
+const getMode = require('../../utils/getMode')
+const getModeString = require('../../utils/getModeString')
 
 module.exports = class ProfileCommand extends Command {
   constructor (client) {
@@ -26,19 +27,32 @@ module.exports = class ProfileCommand extends Command {
       ]
     })
   }
-  run (message, { user, mode }) {
-    try {
-      const stats = process.env.API.getUser({ u: user, m: getMode(mode) })
-    } catch {
-      return message.say(":x: That didn't work - perhaps check your spelling?")
-    }
+  async run (message, { user, mode }) {
+    const osuAPI = new osu.Api(process.env.OSU_KEY, {
+      notFoundAsError: true,
+      completeScores: true
+    })
+    mode = getMode(mode)
+    const stats = await osuAPI.getUser({ u: user })
     const embed = new RichEmbed()
       .setColor('ff66aa')
-      .setTitle(user + 'in' + mode)
-    embed.addField(
-      'Rank',
-      `#${stats.pp.rank} (${stats.country}#${stats.pp.countryRank}`
-    )
+      .setTitle(
+        `${user} in ${getModeString(mode)} - ${Number(
+          stats.pp.raw
+        ).toLocaleString()} pp`
+      )
+      .addField(
+        'Rank',
+        `#${Number(stats.pp.rank).toLocaleString()} (${stats.country}#${Number(
+          stats.pp.countryRank
+        ).toLocaleString()})`, true
+      )
+      .addField('Accuracy', parseFloat(stats.accuracy).toFixed(2) + '%', true)
+      .addField('SS+', stats.counts.SSH, true)
+      .addField('SS', stats.counts.SS, true)
+      .addField('S+', stats.counts.SH, true)
+      .addField('S', stats.counts.S, true)
+      .addField('A', stats.counts.A, true)
     return message.embed(embed)
   }
 }

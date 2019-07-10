@@ -1,9 +1,9 @@
 /* Get osu! mode from string */
 
-const std = ['Standard', 'standard', 's', 'std']
-const taiko = ['Taiko', 'taiko', 't']
-const ctb = ['Catch', 'catch', 'c', 'ctb']
-const mania = ['Mania', 'mania', 'm']
+const std = ['Standard', 'standard', 's', 'std', '0']
+const taiko = ['Taiko', 'taiko', 't', '1']
+const ctb = ['Catch', 'catch', 'c', 'ctb', '2']
+const mania = ['Mania', 'mania', 'm', '3']
 
 function getMode (string) {
   if (std.includes(string)) {
