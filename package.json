@@ -1,0 +1,10 @@
+{
+  "name": "circle",
+  "version": "1.0.0",
+  "description": "A osu! focused bot",
+  "main": "bot.js",
+  "repository": "https://github.com/tildabots/circle",
+  "author": "S Stewart <iamtheworst@programmer.net>",
+  "license": "Apache2",
+  "private": true
+}
